@@ -8,24 +8,19 @@ import java.time.Duration;
 import java.time.LocalDate;
 import lombok.Data;
 
-/**
- * Класс, представляющий фильм. Содержит информацию о названии, описании, дате релиза и
- * продолжительности фильма.
- */
 @Data
 public class Film {
-
     private int id;
 
     @NotBlank(message = "Название не может быть пустым")
     private String name;
 
-    @Size(max = 200, message = "Максимальная длинна описания 200 символов")
-    private String discription;
+    @Size(max = 200, message = "Максимальная длина описания — 200 символов")
+    private String description; // Исправлено с discription
 
     @NotNull(message = "Дата релиза обязательна")
     private LocalDate releaseDate;
 
     @Positive(message = "Продолжительность должна быть положительной")
-    private Duration duration;
+    private int duration;
 }
