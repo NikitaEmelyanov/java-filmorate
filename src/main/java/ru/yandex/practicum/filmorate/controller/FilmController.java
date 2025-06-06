@@ -35,6 +35,7 @@ public class FilmController {
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         log.info("Получен запрос на добавление фильма {}", film);
+        film.isValid(); // Проверка даты релиза
         film.setId(idCounter++);
         films.put(film.getId(), film);
         log.info("Фильм успешно добавлен: {}", film);
@@ -50,7 +51,8 @@ public class FilmController {
      */
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        log.info("Получен запрос на добавление фильма: {}", film);
+        log.info("Получен запрос на обновление фильма: {}", film);
+        film.isValid(); // Проверка даты релиза
         if (!films.containsKey(film.getId())) {
             throw new ValidationException("Фильм с id=" + film.getId() + " не найден");
         }
