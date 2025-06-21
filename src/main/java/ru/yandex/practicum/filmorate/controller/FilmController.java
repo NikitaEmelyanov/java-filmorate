@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
+
     private final FilmService filmService;
 
     public FilmController(FilmService filmService) {
@@ -20,12 +21,14 @@ public class FilmController {
     }
 
     @PostMapping
-    public ResponseFilmDto createFilm(@Validated(FilmCreateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
+    public ResponseFilmDto createFilm(
+        @Validated(FilmCreateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
         return filmService.create(requestFilmDto);
     }
 
     @PutMapping
-    public ResponseFilmDto updateFilm(@Validated(FilmUpdateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
+    public ResponseFilmDto updateFilm(
+        @Validated(FilmUpdateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
         return filmService.update(requestFilmDto);
     }
 
@@ -51,7 +54,8 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<ResponseFilmDto> getPopularFilms(@RequestParam(name = "count", required = false, defaultValue = "10") int count) {
+    public List<ResponseFilmDto> getPopularFilms(
+        @RequestParam(name = "count", required = false, defaultValue = "10") int count) {
         return filmService.getPopularFilms(count);
     }
 

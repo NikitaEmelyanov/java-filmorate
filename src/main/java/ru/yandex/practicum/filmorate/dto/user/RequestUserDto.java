@@ -1,12 +1,17 @@
 package ru.yandex.practicum.filmorate.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+import java.time.LocalDate;
 import ru.yandex.practicum.filmorate.group.validation.user.UserCreateValidation;
 import ru.yandex.practicum.filmorate.group.validation.user.UserUpdateValidation;
 import ru.yandex.practicum.filmorate.model.User;
-
-import java.time.LocalDate;
 
 /**
  * DTO for {@link User}
@@ -17,14 +22,19 @@ public record RequestUserDto(
     @Positive(message = "Поле id должно быть положительным", groups = UserUpdateValidation.class)
     Integer id,
 
-    @Email(message = "Не верный формат e-mail", regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", groups = {UserCreateValidation.class, UserUpdateValidation.class})
-    @NotEmpty(message = "поле e-mail пустое", groups = {UserCreateValidation.class, UserUpdateValidation.class})
+    @Email(message = "Не верный формат e-mail", regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", groups = {
+        UserCreateValidation.class, UserUpdateValidation.class})
+    @NotEmpty(message = "поле e-mail пустое", groups = {UserCreateValidation.class,
+        UserUpdateValidation.class})
     @NotBlank(groups = {UserCreateValidation.class, UserUpdateValidation.class})
     String email,
 
-    @NotEmpty(message = "Поле login пустое", groups = {UserCreateValidation.class, UserUpdateValidation.class})
-    @NotBlank(message = "Поле login пустое", groups = {UserCreateValidation.class, UserUpdateValidation.class})
-    @Pattern(message = "В поле login есть пробелы", regexp = "^[0-9A-Za-z]{6,16}$", groups = {UserCreateValidation.class, UserUpdateValidation.class})
+    @NotEmpty(message = "Поле login пустое", groups = {UserCreateValidation.class,
+        UserUpdateValidation.class})
+    @NotBlank(message = "Поле login пустое", groups = {UserCreateValidation.class,
+        UserUpdateValidation.class})
+    @Pattern(message = "В поле login есть пробелы", regexp = "^[0-9A-Za-z]{6,16}$", groups = {
+        UserCreateValidation.class, UserUpdateValidation.class})
     String login,
 
     String name,
@@ -33,4 +43,5 @@ public record RequestUserDto(
     @Past(groups = {UserCreateValidation.class, UserUpdateValidation.class})
     LocalDate birthday
 ) {
+
 }

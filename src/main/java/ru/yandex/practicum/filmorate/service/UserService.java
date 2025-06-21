@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
+import java.util.List;
 import ru.yandex.practicum.filmorate.dto.user.RequestUserDto;
 import ru.yandex.practicum.filmorate.dto.user.ResponseUserDto;
 
-import java.util.List;
-
 public interface UserService {
+
     ResponseUserDto create(RequestUserDto requestUserDto);
 
     ResponseUserDto update(RequestUserDto requestUserDto);

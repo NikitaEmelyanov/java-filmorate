@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.dto.film;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDate;
 
 /**
@@ -18,4 +17,5 @@ public record ResponseFilmDto(
     @JsonFormat(pattern = "yyyy-MM-dd") LocalDate releaseDate,
     int duration
 ) {
+
 }

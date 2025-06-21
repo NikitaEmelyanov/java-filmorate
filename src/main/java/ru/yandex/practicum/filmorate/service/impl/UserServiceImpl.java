@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service.impl;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserStorage userStorage;
     private final UserMapper userMapper;
 
@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.convertRequestUserDtoToUser(requestUserWithIdDto);
 
         User updatedUser = userStorage.update(user).orElseThrow(() -> {
-            final String message = String.format("Пользователь с id=:%d не найден", requestUserWithIdDto.id());
+            final String message = String.format("Пользователь с id=:%d не найден",
+                requestUserWithIdDto.id());
             log.info(message);
 
             return new NotFoundException(message);
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addFriend(Integer userId, Integer friendId) {
         userStorage.addFriend(userId, friendId).orElseThrow(() -> {
-            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId, friendId);
+            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId,
+                friendId);
             log.info(message);
 
             return new NotFoundException(message);
@@ -69,7 +71,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeFriend(Integer userId, Integer friendId) {
         userStorage.removeFriend(userId, friendId).orElseThrow(() -> {
-            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId, friendId);
+            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId,
+                friendId);
             log.info(message);
 
             return new NotFoundException(message);
@@ -79,7 +82,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ResponseUserDto> getCommonFriends(Integer userId, Integer friendId) {
         List<User> users = userStorage.getCommonFriends(userId, friendId).orElseThrow(() -> {
-            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId, friendId);
+            final String message = String.format("Пользователь с id=%d или id=%d не найден", userId,
+                friendId);
             log.info(message);
 
             return new NotFoundException(message);

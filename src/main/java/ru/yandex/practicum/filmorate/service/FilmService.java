@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
+import java.util.List;
 import ru.yandex.practicum.filmorate.dto.film.RequestFilmDto;
 import ru.yandex.practicum.filmorate.dto.film.ResponseFilmDto;
 
-import java.util.List;
-
 public interface FilmService {
+
     ResponseFilmDto create(RequestFilmDto requestFilmDto);
 
     ResponseFilmDto update(RequestFilmDto requestFilmWithIdDto);

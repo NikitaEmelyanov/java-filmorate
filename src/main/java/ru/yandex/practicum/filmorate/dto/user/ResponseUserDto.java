@@ -17,4 +17,5 @@ public record ResponseUserDto(
 
     LocalDate birthday
 ) {
+
 }
