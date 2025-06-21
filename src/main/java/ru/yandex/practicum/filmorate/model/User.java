@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -12,6 +15,7 @@ import lombok.Data;
  * пользователя.
  */
 @Data
+@Builder
 public class User {
 
     private int id;
@@ -28,4 +32,14 @@ public class User {
 
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
+
+    private final Set<Integer> friendIds = new HashSet<>();
+
+    public void setFriendId(Integer friendId) {
+        friendIds.add(friendId);
+    }
+
+    public void removeFriendId(Integer id) {
+        friendIds.remove(id);
+    }
 }

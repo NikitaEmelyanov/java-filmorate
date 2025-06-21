@@ -3,9 +3,13 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Film {
     private int id;
 
@@ -21,12 +25,13 @@ public class Film {
     @Positive(message = "Продолжительность должна быть положительной")
     private int duration;
 
-    // Добавьте этот метод
-    public boolean isValid() {
-        LocalDate minDate = LocalDate.of(1895, 12, 28);
-        if (releaseDate.isBefore(minDate)) {
-            throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года");
-        }
-        return true;
+    private final Set<Integer> likes = new HashSet<>();
+
+    public void setLike(Integer userId) {
+        likes.add(userId);
+    }
+
+    public void removeLike(Integer userId) {
+        likes.remove(userId);
     }
 }
