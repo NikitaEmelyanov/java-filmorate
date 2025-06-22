@@ -22,13 +22,13 @@ public class FilmController {
 
     @PostMapping
     public ResponseFilmDto createFilm(
-        @Validated(FilmCreateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
+            @Validated(FilmCreateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
         return filmService.create(requestFilmDto);
     }
 
     @PutMapping
     public ResponseFilmDto updateFilm(
-        @Validated(FilmUpdateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
+            @Validated(FilmUpdateValidation.class) @RequestBody RequestFilmDto requestFilmDto) {
         return filmService.update(requestFilmDto);
     }
 
@@ -39,23 +39,23 @@ public class FilmController {
 
     @PutMapping("/{filmId}/like/{userId}")
     public void addLike(
-        @PathVariable Integer filmId,
-        @PathVariable Integer userId
+            @PathVariable Integer filmId,
+            @PathVariable Integer userId
     ) {
         filmService.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
     public void removeLike(
-        @PathVariable Integer filmId,
-        @PathVariable Integer userId
+            @PathVariable Integer filmId,
+            @PathVariable Integer userId
     ) {
         filmService.removeLike(filmId, userId);
     }
 
     @GetMapping("/popular")
     public List<ResponseFilmDto> getPopularFilms(
-        @RequestParam(name = "count", required = false, defaultValue = "10") int count) {
+            @RequestParam(name = "count", defaultValue = "10") int count) {
         return filmService.getPopularFilms(count);
     }
 

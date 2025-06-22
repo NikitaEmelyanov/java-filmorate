@@ -1,13 +1,14 @@
 package ru.yandex.practicum.filmorate.exception;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -16,8 +17,8 @@ public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiException handleUserNotFoundException(NotFoundException e) {
         return new ApiException(
-            e.getMessage(),
-            LocalDateTime.now()
+                e.getMessage(),
+                LocalDateTime.now()
         );
     }
 
@@ -26,10 +27,19 @@ public class ApiExceptionHandler {
     public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException e) {
         Map<String, String> validationExceptions = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(
-            fieldError -> validationExceptions.put(fieldError.getField(),
-                fieldError.getDefaultMessage())
+                fieldError -> validationExceptions.put(fieldError.getField(),
+                        fieldError.getDefaultMessage())
         );
 
         return validationExceptions;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiException handleThrowable(Throwable e) {
+        return new ApiException(
+                "Произошла внутренняя ошибка сервера: " + e.getMessage(),
+                LocalDateTime.now()
+        );
     }
 }

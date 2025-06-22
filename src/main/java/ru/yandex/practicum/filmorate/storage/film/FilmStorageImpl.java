@@ -1,24 +1,22 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
+
+import java.util.*;
 
 @Repository
 public class FilmStorageImpl implements FilmStorage {
 
-    private final HashMap<Integer, Film> filmHashMap = new HashMap<>();
+    private final Map<Integer, Film> filmMap = new HashMap<>();
     private Integer id = 1;
 
     @Override
     public Film create(Film film) {
         film.setId(nexId());
-        filmHashMap.put(film.getId(), film);
+        filmMap.put(film.getId(), film);
 
-        return filmHashMap.get(film.getId());
+        return filmMap.get(film.getId());
     }
 
     @Override
@@ -26,8 +24,8 @@ public class FilmStorageImpl implements FilmStorage {
         Optional<Film> updatedFilm = Optional.empty();
 
         if (checkId(film.getId())) {
-            filmHashMap.replace(film.getId(), film);
-            updatedFilm = Optional.of(filmHashMap.get(film.getId()));
+            filmMap.replace(film.getId(), film);
+            updatedFilm = Optional.of(filmMap.get(film.getId()));
         }
 
         return updatedFilm;
@@ -35,13 +33,13 @@ public class FilmStorageImpl implements FilmStorage {
 
     @Override
     public List<Film> getAll() {
-        return filmHashMap.values().stream().toList();
+        return filmMap.values().stream().toList();
     }
 
     @Override
     public Optional<Boolean> addLike(Integer filmId, Integer userId) {
         if (checkId(filmId)) {
-            Film film = filmHashMap.get(filmId);
+            Film film = filmMap.get(filmId);
             film.setLike(userId);
             update(film);
 
@@ -53,7 +51,7 @@ public class FilmStorageImpl implements FilmStorage {
     @Override
     public Optional<Boolean> removeLike(Integer filmId, Integer userId) {
         if (checkId(filmId)) {
-            Film film = filmHashMap.get(filmId);
+            Film film = filmMap.get(filmId);
             film.removeLike(userId);
             update(film);
             return Optional.of(true);
@@ -63,10 +61,10 @@ public class FilmStorageImpl implements FilmStorage {
 
     @Override
     public List<Film> getPopularFilms(int count) {
-        return filmHashMap.values().stream()
-            .sorted(Comparator.comparingInt(film -> -film.getLikes().size()))
-            .limit(count)
-            .toList();
+        return filmMap.values().stream()
+                .sorted(Comparator.comparingInt(film -> -film.getLikes().size()))
+                .limit(count)
+                .toList();
     }
 
     private int nexId() {
@@ -74,6 +72,6 @@ public class FilmStorageImpl implements FilmStorage {
     }
 
     private boolean checkId(Integer id) {
-        return filmHashMap.containsKey(id);
+        return filmMap.containsKey(id);
     }
 }
