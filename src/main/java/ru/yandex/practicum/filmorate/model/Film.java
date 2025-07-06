@@ -9,11 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.enums.FilmGenre;
+import ru.yandex.practicum.filmorate.model.enums.FilmMpaRating;
 
 @Data
 @Builder
 public class Film {
-
     private int id;
 
     @NotBlank(message = "Название не может быть пустым")
@@ -27,6 +28,10 @@ public class Film {
 
     @Positive(message = "Продолжительность должна быть положительной")
     private int duration;
+
+    private FilmMpaRating mpa;
+
+    private Set<FilmGenre> genres = new HashSet<>();
 
     private final Set<Integer> likes = new HashSet<>();
 
