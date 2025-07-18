@@ -4,11 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Builder;
-import lombok.Data;
 
 /**
  * Класс, представляющий пользователя. Содержит информацию об email, логине, имени и дате рождения
