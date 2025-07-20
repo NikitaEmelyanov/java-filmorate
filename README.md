@@ -1,40 +1,34 @@
 ## Схема базы данных
 
-### Таблицы
+![Database Schema](schema.png)
 
-#### Таблица `mpaa` (рейтинги MPA)
-| Столбец   | Тип данных           | Описание                |
-|-----------|----------------------|-------------------------|
-| mpaa_id   | integer              | Уникальный ID рейтинга (PK) |
-| name      | character varying(5) | Название рейтинга (G, PG, PG-13 и др.) |
+Примеры запросов к DB:
 
-#### Таблица `films` (фильмы)
-| Столбец       | Тип данных            | Описание                |
-|---------------|-----------------------|-------------------------|
-| film_id       | integer               | Уникальный ID фильма (PK) |
-| name          | character varying(128)| Название фильма         |
-| description   | character varying(255)| Описание фильма         |
-| release_date  | date                  | Дата выхода фильма      |
-| duration      | integer               | Продолжительность в минутах |
-| mpaa_id       | integer               | Ссылка на рейтинг (FK)  |
+Добавление пользователя
 
-#### Таблица `users` (пользователи)
-| Столбец   | Тип данных            | Описание                |
-|-----------|-----------------------|-------------------------|
-| user_id   | integer               | Уникальный ID пользователя (PK) |
-| email     | character varying(128)| Email пользователя      |
-| login     | character varying(128)| Логин пользователя      |
-| name      | character varying(128)| Имя пользователя        |
-| birthday  | date                  | Дата рождения           |
+      INSERT INTO user (email, login, name, birthday)
+      VALUES ('there_was_my_cat@gmail.com', 'mouse_hanter', 'Leopold', '2014-04-04');
+Получение списка всех пользователей
 
-#### Таблица `friends` (друзья)
-| Столбец   | Тип данных  | Описание                |
-|-----------|-------------|-------------------------|
-| user_id   | integer     | ID пользователя (FK)    |
-| friend_id | integer     | ID друга (FK)           |
+      SELECT * FROM user;
 
-### Связи между таблицами
-- Поле `mpaa_id` в таблице `films` ссылается на `mpaa.mpaa_id`
-- Поля `user_id` и `friend_id` в таблице `friends` ссылаются на `users.user_id`
+Добавление фильма
 
-![Database Schema](schema.jpeg)
+      INSERT INTO film (name, description, release_date, duration, rating)
+      VALUES ('Спасаем динозавров', 'Описание данного фильма', '2030-10-10', 900, 'R');
+Проверка валидности значения поля "rating" предусмотрена логикой приложения
+Получение {N} топ фильмов
+
+      SELECT * FROM film
+      WHERE id IN (SELECT film_id FROM film_like
+                      GROUP BY film_id 
+                      ORDER BY COUNT (film_id) DESC
+                      LIMIT N);
+Создание дружбы
+
+      INSERT INTO friendship (user_one_id, user_two_id)
+      VALUES (1,2),
+             (2,1)
+      IF EXISTS (SELECT id FROM user
+                   WHERE user.id = 1 OR user.id = 2)
+      ON CONFLICT DO NOTHING; 
