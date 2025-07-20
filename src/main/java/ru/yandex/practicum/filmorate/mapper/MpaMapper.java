@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.mapper;
 
 import lombok.NoArgsConstructor;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.MpaWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.MpaWithIdAndName;
 import ru.yandex.practicum.filmorate.model.MpaWithId;
 
 @NoArgsConstructor

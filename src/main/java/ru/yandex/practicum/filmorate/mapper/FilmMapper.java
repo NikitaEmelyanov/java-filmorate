@@ -1,11 +1,12 @@
 package ru.yandex.practicum.filmorate.mapper;
 
 import java.util.List;
+import java.util.Set;
 import lombok.NoArgsConstructor;
+import ru.yandex.practicum.filmorate.dto.classes.FilmResponseDto;
+import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.MpaWithIdAndName;
 import ru.yandex.practicum.filmorate.dto.create.FilmCreateRequestDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.FilmResponseDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.GenreWithIdAndName;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.MpaWithIdAndName;
 import ru.yandex.practicum.filmorate.dto.update.FilmUpdateDto;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.GenreWithId;
@@ -26,7 +27,7 @@ public class FilmMapper {
     }
 
     public static Film mapToFilm(FilmCreateRequestDto filmCreateRequestDto, MpaWithIdAndName mpa,
-        List<GenreWithId> genre) {
+        Set<GenreWithId> genre) {
         Film film = new Film();
         film.setName(filmCreateRequestDto.getName());
         film.setReleaseDate(filmCreateRequestDto.getReleaseDate());

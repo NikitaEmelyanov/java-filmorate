@@ -2,9 +2,11 @@ package ru.yandex.practicum.filmorate.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +15,11 @@ import ru.yandex.practicum.filmorate.dal.FilmRepository;
 import ru.yandex.practicum.filmorate.dal.GenreRepository;
 import ru.yandex.practicum.filmorate.dal.MpaRepository;
 import ru.yandex.practicum.filmorate.dal.UserRepository;
+import ru.yandex.practicum.filmorate.dto.classes.FilmResponseDto;
+import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.LikeResponseDto;
+import ru.yandex.practicum.filmorate.dto.classes.MpaWithIdAndName;
 import ru.yandex.practicum.filmorate.dto.create.FilmCreateRequestDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.FilmResponseDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.GenreWithIdAndName;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.LikeResponseDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.MpaWithIdAndName;
 import ru.yandex.practicum.filmorate.dto.update.FilmUpdateDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NullObject;
@@ -42,7 +44,7 @@ public class FilmService {
         log.trace("Сервисный метод создания фильма");
         Map<Integer, String> allFullGenres = getMapGenres();
 
-        List<GenreWithId> resultAdd = checkAndRemoveDuplicateAndContains(
+        Set<GenreWithId> resultAdd = checkAndRemoveDuplicateAndContains(
             createRequestDto.getGenres(), allFullGenres);
         MpaWithIdAndName mpa = getFillMpaByMpaWithId(createRequestDto.getMpa());
 
@@ -145,9 +147,9 @@ public class FilmService {
             genreRepository.findAllGenresFilm(film.getId()));
     }
 
-    private List<GenreWithId> checkAndRemoveDuplicateAndContains(List<GenreWithId> genre,
+    private Set<GenreWithId> checkAndRemoveDuplicateAndContains(Set<GenreWithId> genre,
         Map<Integer, String> mapAllGenres) {
-        List<GenreWithId> result = new ArrayList<>();
+        Set<GenreWithId> result = new HashSet<>();
         if (genre == null) {
             return result;
         }
@@ -173,7 +175,7 @@ public class FilmService {
             );
     }
 
-    private List<GenreWithIdAndName> genFullGenresByList(List<GenreWithId> genres,
+    private List<GenreWithIdAndName> genFullGenresByList(Set<GenreWithId> genres,
         Map<Integer, String> mapAllGenres) {
         if (genres == null || genres.isEmpty()) {
             return new ArrayList<>();

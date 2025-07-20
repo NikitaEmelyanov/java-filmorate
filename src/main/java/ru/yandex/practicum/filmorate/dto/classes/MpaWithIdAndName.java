@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dto.dtoclasses;
+package ru.yandex.practicum.filmorate.dto.classes;
 
 import lombok.Getter;
 import lombok.Setter;

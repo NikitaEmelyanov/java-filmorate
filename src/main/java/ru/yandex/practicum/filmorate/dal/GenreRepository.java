@@ -3,10 +3,11 @@ package ru.yandex.practicum.filmorate.dal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.GenreWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
 import ru.yandex.practicum.filmorate.model.GenreWithId;
 
 @Repository
@@ -42,7 +43,15 @@ public class GenreRepository extends BaseRepository<GenreWithIdAndName> {
     }
 
     public void insertGenresFilm(Collection<GenreWithId> genres, Long filmId) {
-        genres.forEach(genre -> insertGenreFilm(genre.getId(), filmId));
+        if (genres == null || genres.isEmpty()) {
+            return;
+        }
+
+        String sql = "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)";
+
+        jdbc.batchUpdate(sql, genres.stream()
+            .map(genre -> new Object[]{filmId, genre.getId()})
+            .collect(Collectors.toList()));
     }
 
     public void deleteGenreFilm(Long filmId) {

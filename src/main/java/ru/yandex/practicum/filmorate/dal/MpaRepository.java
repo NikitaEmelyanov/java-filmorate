@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.MpaWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.MpaWithIdAndName;
 
 @Repository
 public class MpaRepository extends BaseRepository<MpaWithIdAndName> {

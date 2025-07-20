@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.practicum.filmorate.dto.classes.FilmResponseDto;
+import ru.yandex.practicum.filmorate.dto.classes.LikeResponseDto;
 import ru.yandex.practicum.filmorate.dto.create.FilmCreateRequestDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.FilmResponseDto;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.LikeResponseDto;
 import ru.yandex.practicum.filmorate.dto.update.FilmUpdateDto;
 import ru.yandex.practicum.filmorate.service.FilmService;
 

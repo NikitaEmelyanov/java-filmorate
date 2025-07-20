@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dto.dtoclasses;
+package ru.yandex.practicum.filmorate.dto.classes;
 
 import java.time.LocalDate;
 import java.util.List;

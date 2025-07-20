@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dal.GenreRepository;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.GenreWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.GenreWithId;
 

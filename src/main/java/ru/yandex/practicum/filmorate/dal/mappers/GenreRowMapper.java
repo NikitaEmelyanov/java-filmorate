@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dto.dtoclasses.GenreWithIdAndName;
+import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
 
 @Component
 public class GenreRowMapper implements RowMapper<GenreWithIdAndName> {
