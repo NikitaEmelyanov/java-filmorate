@@ -1,13 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,11 +7,11 @@ import ru.yandex.practicum.filmorate.dal.FilmRepository;
 import ru.yandex.practicum.filmorate.dal.GenreRepository;
 import ru.yandex.practicum.filmorate.dal.MpaRepository;
 import ru.yandex.practicum.filmorate.dal.UserRepository;
+import ru.yandex.practicum.filmorate.dto.create.FilmCreateRequestDto;
 import ru.yandex.practicum.filmorate.dto.classes.FilmResponseDto;
 import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
 import ru.yandex.practicum.filmorate.dto.classes.LikeResponseDto;
 import ru.yandex.practicum.filmorate.dto.classes.MpaWithIdAndName;
-import ru.yandex.practicum.filmorate.dto.create.FilmCreateRequestDto;
 import ru.yandex.practicum.filmorate.dto.update.FilmUpdateDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NullObject;
@@ -30,11 +22,13 @@ import ru.yandex.practicum.filmorate.model.GenreWithId;
 import ru.yandex.practicum.filmorate.model.MpaWithId;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class FilmService {
-
     private final UserRepository userRepository;
     private final GenreRepository genreRepository;
     private final MpaRepository mpaRepository;
@@ -44,8 +38,7 @@ public class FilmService {
         log.trace("Сервисный метод создания фильма");
         Map<Integer, String> allFullGenres = getMapGenres();
 
-        Set<GenreWithId> resultAdd = checkAndRemoveDuplicateAndContains(
-            createRequestDto.getGenres(), allFullGenres);
+        List<GenreWithId> resultAdd = checkAndRemoveDuplicateAndContains(createRequestDto.getGenres(), allFullGenres);
         MpaWithIdAndName mpa = getFillMpaByMpaWithId(createRequestDto.getMpa());
 
         Film film = FilmMapper.mapToFilm(createRequestDto, mpa, resultAdd);
@@ -75,17 +68,14 @@ public class FilmService {
         List<GenreWithIdAndName> resulGenres;
         if (request.hasGenres()) {
             Map<Integer, String> allFullGenres = getMapGenres();
-            request.setGenres(
-                checkAndRemoveDuplicateAndContains(request.getGenres(), allFullGenres));
+            request.setGenres(checkAndRemoveDuplicateAndContains(request.getGenres(), allFullGenres));
             resulGenres = genFullGenresByList(request.getGenres(), allFullGenres);
         } else {
             resulGenres = genreRepository.findAllGenresFilm(oldFilm.getId());
 
         }
-        filmRepository.updateFilm(
-            FilmMapper.updateFields(oldFilm, request, resultMpa, resulGenres));
-        genreRepository.updateGenresFilm(GenreMapper.mapToListGenreWithId(resulGenres),
-            oldFilm.getId());
+        filmRepository.updateFilm(FilmMapper.updateFields(oldFilm, request, resultMpa, resulGenres));
+        genreRepository.updateGenresFilm(GenreMapper.mapToListGenreWithId(resulGenres), oldFilm.getId());
         return FilmMapper.buildResponse(oldFilm, resulGenres);
     }
 
@@ -106,9 +96,7 @@ public class FilmService {
         Film film = filmRepository.findOne(filmId).orElseThrow(() ->
             new NotFoundException(Film.class.getName(), filmId));
         Optional<User> optionalUser = userRepository.findOne(userId);
-        if (optionalUser.isEmpty()) {
-            throw new NotFoundException(User.class.getName(), userId);
-        }
+        if (optionalUser.isEmpty()) throw new NotFoundException(User.class.getName(), userId);
 
         filmRepository.setInsertLikeQuery(userId, filmId);
         return null;
@@ -120,9 +108,7 @@ public class FilmService {
             new NotFoundException(Film.class.getName(), filmId));
 
         Optional<User> optionalUser = userRepository.findOne(userId);
-        if (optionalUser.isEmpty()) {
-            throw new NotFoundException(User.class.getName(), userId);
-        }
+        if (optionalUser.isEmpty()) throw new NotFoundException(User.class.getName(), userId);
         filmRepository.removeLikeBy(userId, filmId);
         return true;
     }
@@ -147,21 +133,15 @@ public class FilmService {
             genreRepository.findAllGenresFilm(film.getId()));
     }
 
-    private Set<GenreWithId> checkAndRemoveDuplicateAndContains(Set<GenreWithId> genre,
+    private List<GenreWithId> checkAndRemoveDuplicateAndContains(List<GenreWithId> genre,
         Map<Integer, String> mapAllGenres) {
-        Set<GenreWithId> result = new LinkedHashSet<>();
-        if (genre == null) {
-            return result;
-        }
+        List<GenreWithId> result = new ArrayList<>();
+        if (genre == null) return result;
         for (GenreWithId genreWithId : genre) {
-            if (!mapAllGenres.containsKey(genreWithId.getId())) {
-                throw new NotFoundException(
-                    GenreWithId.class.getName(),
-                    genreWithId.getId());
-            }
-            if (!result.contains(genreWithId)) {
-                result.add(genreWithId);
-            }
+            if (!mapAllGenres.containsKey(genreWithId.getId())) throw new NotFoundException(
+                GenreWithId.class.getName(),
+                genreWithId.getId());
+            if (!result.contains(genreWithId)) result.add(genreWithId);
         }
         return result;
     }
@@ -175,22 +155,16 @@ public class FilmService {
             );
     }
 
-    private List<GenreWithIdAndName> genFullGenresByList(Set<GenreWithId> genres,
-        Map<Integer, String> mapAllGenres) {
-        if (genres == null || genres.isEmpty()) {
-            return new ArrayList<>();
-        }
+    private List<GenreWithIdAndName> genFullGenresByList(List<GenreWithId> genres, Map<Integer, String> mapAllGenres) {
+        if (genres == null || genres.isEmpty()) return new ArrayList<>();
         return genres.stream()
             .map(GenreWithId::getId)
             .map(genreId -> new GenreWithIdAndName(genreId, mapAllGenres.get(genreId)))
             .collect(Collectors.toList());
     }
 
-    private List<GenreWithIdAndName> genFullGenresByListIds(List<Integer> genreIds,
-        Map<Integer, String> mapAllGenres) {
-        if (genreIds == null || genreIds.isEmpty()) {
-            return new ArrayList<>();
-        }
+    private List<GenreWithIdAndName> genFullGenresByListIds(List<Integer> genreIds, Map<Integer, String> mapAllGenres) {
+        if (genreIds == null || genreIds.isEmpty()) return new ArrayList<>();
         return genreIds.stream()
             .map(genreId -> new GenreWithIdAndName(genreId, mapAllGenres.get(genreId)))
             .collect(Collectors.toList());

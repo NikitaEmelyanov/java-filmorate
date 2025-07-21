@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.annotation.DateNoEarlierThan;
 import ru.yandex.practicum.filmorate.model.GenreWithId;
@@ -27,7 +27,7 @@ public class FilmUpdateDto {
     @Positive
     private Integer duration;
     private MpaWithId mpa;
-    private Set<GenreWithId> genres;
+    private List<GenreWithId> genres;
 
     public boolean hasMpa() {
         return !(mpa == null || mpa.getId() == null);

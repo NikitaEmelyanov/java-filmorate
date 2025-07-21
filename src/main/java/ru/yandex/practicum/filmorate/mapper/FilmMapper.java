@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.mapper;
 
 import java.util.List;
-import java.util.Set;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.dto.classes.FilmResponseDto;
 import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
@@ -27,7 +26,7 @@ public class FilmMapper {
     }
 
     public static Film mapToFilm(FilmCreateRequestDto filmCreateRequestDto, MpaWithIdAndName mpa,
-        Set<GenreWithId> genre) {
+        List<GenreWithId> genre) {
         Film film = new Film();
         film.setName(filmCreateRequestDto.getName());
         film.setReleaseDate(filmCreateRequestDto.getReleaseDate());

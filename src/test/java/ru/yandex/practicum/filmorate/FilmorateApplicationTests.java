@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,7 +120,7 @@ class FilmorateApplicationTests {
         film.setDuration(120);
         film.setReleaseDate(LocalDate.now());
         film.setMpa(new MpaWithIdAndName(1, null));
-        film.setGenres(Set.of(genre));
+        film.setGenres(List.of(genre));
         return film;
     }
 }

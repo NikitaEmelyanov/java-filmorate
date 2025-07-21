@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.mapper;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.dto.classes.GenreWithIdAndName;
@@ -16,9 +15,9 @@ public class GenreMapper {
         return genreWithId;
     }
 
-    public static Set<GenreWithId> mapToListGenreWithId(
+    public static List<GenreWithId> mapToListGenreWithId(
         List<GenreWithIdAndName> genreWithIdAndNames) {
         return genreWithIdAndNames.stream().map(GenreMapper::mapToGenreWithId)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 }
