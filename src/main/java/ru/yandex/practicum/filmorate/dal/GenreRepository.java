@@ -48,12 +48,13 @@ public class GenreRepository extends BaseRepository<GenreWithIdAndName> {
             return;
         }
 
-        String sql = "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)";
-
-        jdbc.batchUpdate(sql, genres.stream()
-            .sorted(Comparator.comparing(GenreWithId::getId))
-            .map(genre -> new Object[]{filmId, genre.getId()})
-            .collect(Collectors.toList()));
+        jdbc.batchUpdate(
+            "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)",
+            genres.stream()
+                .sorted(Comparator.comparing(GenreWithId::getId)) // Сортировка
+                .map(g -> new Object[]{filmId, g.getId()})
+                .collect(Collectors.toList())
+        );
     }
 
     public void deleteGenreFilm(Long filmId) {
