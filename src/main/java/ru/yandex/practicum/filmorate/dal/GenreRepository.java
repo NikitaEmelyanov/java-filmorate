@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.dal;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +51,7 @@ public class GenreRepository extends BaseRepository<GenreWithIdAndName> {
         String sql = "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)";
 
         jdbc.batchUpdate(sql, genres.stream()
+            .sorted(Comparator.comparing(GenreWithId::getId))
             .map(genre -> new Object[]{filmId, genre.getId()})
             .collect(Collectors.toList()));
     }
